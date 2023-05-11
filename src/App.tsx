@@ -7,6 +7,15 @@ function App() {
     Math.floor(Math.random() * 100),
     Math.floor(Math.random() * 100),
   ]);
+  const [score, setScore] = useState(0);
+
+  function handleScore() {
+    setScore((prevScore) => prevScore + 1);
+    setPosition([Math.floor(Math.random() * 100), Math.floor(Math.random() * 100)]);
+    if (score === 10) {
+      setStatus("finishied");
+    }
+  }
 
   useEffect(() => {
     let interval: number;
@@ -16,6 +25,7 @@ function App() {
     }
     if (status === "initial") {
       setTimer(0);
+      setScore(0);
     }
 
     return () => clearInterval(interval);
@@ -24,10 +34,17 @@ function App() {
   return (
     <main>
       <header>
-        <h1>{Math.round((timer / 10) * 100) / 100} segundos</h1>
+        <h1>
+          {Math.round((timer / 10) * 100) / 100} segundos {score} Score
+        </h1>
       </header>
-      <section style={{position: "relative"}}>
-        <figure style={{top: `${position[0]}%`, left: `${position[1]}%`, position: "absolute"}} />
+      <section style={{position: "relative", marginRight: 48, marginBottom: 48}}>
+        {status === "playing" && (
+          <figure
+            style={{top: `${position[0]}%`, left: `${position[1]}%`, position: "absolute"}}
+            onClick={handleScore}
+          />
+        )}
       </section>
       <footer>
         {status === "initial" && <button onClick={() => setStatus("playing")}>Jugar</button>}
