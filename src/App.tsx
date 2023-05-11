@@ -10,6 +10,9 @@ function App() {
     if (status === "playing") {
       interval = setInterval(() => setTimer((prevTime) => prevTime + 1), 100);
     }
+    if (status === "initial") {
+      setTimer(0);
+    }
 
     return () => clearInterval(interval);
   }, [status]);
@@ -17,7 +20,7 @@ function App() {
   return (
     <main>
       <header>
-        <h1>{timer * 100} segundos</h1>
+        <h1>{Math.round((timer / 10) * 100) / 100} segundos</h1>
       </header>
       <section>
         <figure />
