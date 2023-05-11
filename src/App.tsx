@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 function App() {
   const [status, setStatus] = useState<"initial" | "playing" | "finishied">("initial");
   const [timer, setTimer] = useState(0);
+  const [position, setPosition] = useState<[number, number]>([
+    Math.floor(Math.random() * 100),
+    Math.floor(Math.random() * 100),
+  ]);
 
   useEffect(() => {
     let interval: number;
@@ -22,8 +26,8 @@ function App() {
       <header>
         <h1>{Math.round((timer / 10) * 100) / 100} segundos</h1>
       </header>
-      <section>
-        <figure />
+      <section style={{position: "relative"}}>
+        <figure style={{top: `${position[0]}%`, left: `${position[1]}%`, position: "absolute"}} />
       </section>
       <footer>
         {status === "initial" && <button onClick={() => setStatus("playing")}>Jugar</button>}
