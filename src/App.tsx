@@ -1,18 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [status, setStatus] = useState<"initial" | "playing" | "finishied">("initial");
+  const [timer, setTimer] = useState(0);
+
+  useEffect(() => {
+    let interval: number;
+
+    if (status === "playing") {
+      interval = setInterval(() => setTimer((prevTime) => prevTime + 1), 100);
+    }
+
+    return () => clearInterval(interval);
+  }, [status]);
 
   return (
     <main>
       <header>
-        <h1>{0} segundos</h1>
+        <h1>{timer * 100} segundos</h1>
       </header>
       <section>
         <figure />
       </section>
       <footer>
-        <button>Jugar</button>
+        {status === "initial" && <button onClick={() => setStatus("playing")}>Jugar</button>}
+        {status === "playing" && <button onClick={() => setStatus("finishied")}>Detener</button>}
+        {status === "finishied" && <button onClick={() => setStatus("initial")}>Reiniciar</button>}
       </footer>
     </main>
   );
